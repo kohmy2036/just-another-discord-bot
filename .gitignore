@@ -1,0 +1,10 @@
+.vscode
+.eslintrc.js
+bot.log
+node_modules
+help.js
+package.json
+package-lock.json
+cheat.js
+config.json
+run.bat
