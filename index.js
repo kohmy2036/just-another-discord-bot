@@ -3,7 +3,7 @@
 const Discord = require('discord.js');
 const logging = require('./Logging/index').loggingM;
 
-const TOKEN = require('./config.json').token;
+const config = require('./config.json');
 const PREFIX = "!";
 const OwnerID= "328194210802958338";
 
