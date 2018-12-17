@@ -20,6 +20,6 @@ const logger = winston.createLogger({
 
 
 
-exports.loggingM = function log(lContent) {
-    logger.info(lContent);
+exports.loggingM =async function log(lContent) {
+    await logger.info(lContent);
 };
