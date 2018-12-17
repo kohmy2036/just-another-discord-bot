@@ -9,3 +9,5 @@ cheat.js
 config.json
 run.bat
 randomColorHex.json
+ecosystem.config.js
+modular-bot/main.js

@@ -10,31 +10,28 @@ const OwnerID= "328194210802958338";
 var spam = config.spam;
 
 const bot = new Discord.Client();
-exports.bot = bot;
 
 var idiot_org = "https://goo.gl/SysfNV"; //eslint-disable-line
 let d = new Date();
 
 
 bot.on("ready", async () => { // eslint-disable-next-line no-console 
+  await bot.user.setActivity("with Discord API");
   logging("Ready at "+ d);// eslint-disable-next-line no-console
   logging(`Bot has started, with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} guilds.`);
-  bot.user.setActivity("with Discord API");
 });
 
 
 bot.on("message", async function(message) {
   if (!message.guild) return;
   if (message.author.equals(bot.user)) return;
-  logging(message.author);//eslint-disable-line 
   if (!message.content.startsWith(PREFIX)) return;
   
-  var args = message.content.substring(PREFIX.length).split(" ");
-  var n = args[1];
-  const cmd = args[0];
+  const args = message.content.slice(PREFIX.length).split(' ');
+  const command = args.shift().toLowerCase();
   var lmId = message.channel.lastMessage.author.id;
 
-  logging(`${message.id} by ${message.author.tag} (${message.author.id}): ${message.content}`);
+  await logging(`${message.id} by ${message.author.tag} (${message.author.id}): ${message.content}`);
 
   async function geturl(msg) {
     var fetchedMsg = await message.channel.fetchMessage(msg.toString());
@@ -42,32 +39,34 @@ bot.on("message", async function(message) {
     return mUrl;
   }
 
-  switch (cmd.toLowerCase()) {
+  switch (command) {
 
     case "geturl": {   /*FINALLY WORKING*/
       if (!args[1]) break; 
-      var result = await geturl(n).catch(err => console.error(err)); 
-      if (!result) return message.reply("the message must be on the channel/guild that I have access to"); 
+      
+      var result = await geturl(args[0]).catch(err => console.error(err)); 
+      if (!result) { message.reply("the message must be on the channel/guild that I have access to"); }
       else {       
       message.reply(result).catch(err => {logging(err)}); //eslint-disable-line
+      }
     break;
-     }}
+    }
 
     case "say":{
       let sayThis = message.channel.lastMessage.toString().replace(PREFIX + args[0], "");
       message.channel.send(sayThis);
-      break;}
+    break;}
 
     case "token": {//token
       message.channel.send(`<@${lmId}> bot token has been sent in DM.`);
       message.author.send(`\`\`\`js\n const TOKEN = require('./config.json).token\`\`\``);
-      break;}
+    break;}
     
     case "ping": {//!ping 
       message.channel.send("Pong!").then(sent => {
         sent.edit(`Pong! \n\`(${sent.createdTimestamp - message.createdTimestamp}ms)\``);
       });
-      break;}
+    break;}
 
     case "p": 
     case "purge":{
@@ -111,22 +110,22 @@ bot.on("message", async function(message) {
     break;
         }
 
-      case "spam" : {
-        if (message.author.id !== OwnerID) break;
+    case "spam" : {
+      if (message.author.id !== OwnerID) break;
         message.reply("here we go").then(message.edit(spam)
-        .catch(err => {
-          logging(err); //eslint-disable-line no-console
-        }));
-        break;
-      }
+          .catch(err => {
+           logging(err); //eslint-disable-line no-console
+     }));
+    break;
+    }
 
-      case "tts" : {
-        let sayThis = message.channel.lastMessage.toString().replace(PREFIX + args[0], "");
-        message.channel.send(sayThis, {tts: true});
-        break;
-      }
+    case "tts" : {
+      let sayThis = message.channel.lastMessage.toString().replace(PREFIX + args[0], "");
+      message.channel.send(sayThis, {tts: true});
+    break;
+    }
 
-      case "user" : {
+    case "user" : {
         const user  = message.mentions.users.first();
         const member = message.guild.member(user);
         var isbot = function isbot() {
@@ -206,8 +205,14 @@ bot.on("message", async function(message) {
         }}).then().catch(err => console.log(err)); //eslint-disable-line 
 
         break;
-      }
+    }
 
+    case "restart" : {
+      if (message.author.id !== OwnerID) break;
+
+      process.exit();
+    break;
+    }
     }
   }
 );
