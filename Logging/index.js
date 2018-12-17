@@ -1,6 +1,4 @@
 const winston = require('winston');
-const path = require('path');// eslint-disable-line no-unused-vars
-const fs = require('fs'); // eslint-disable-line no-unused-vars
 
 var exports = module.exports = {};
 
