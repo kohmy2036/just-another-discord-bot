@@ -1,6 +1,6 @@
 const winston = require('winston');
 
-var exports = module.exports = {};
+// let exports = module.exports = {};
 
 
 const logger = winston.createLogger({
@@ -18,6 +18,6 @@ const logger = winston.createLogger({
 
 
 
-exports.loggingM =async function log(lContent) {
+exports.loggingM = async (lContent) => {
     await logger.info(lContent);
 };

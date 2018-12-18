@@ -6,9 +6,8 @@ help.js
 package.json
 package-lock.json
 cheat.js
-config.json
+botConfig.json
 run.bat
-randomColorHex.json
 ecosystem.config.js
-modular-bot/main.js
+modular-bot
 
